@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -58,12 +59,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
+       User user = userRepository.findUserByEmail(s);
+       if(user != null){
+           return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
+       }
+       return null;
     }
-
-
-//    @Override
-//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//        return null;
-//    }
 }
