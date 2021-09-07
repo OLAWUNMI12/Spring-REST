@@ -6,9 +6,6 @@ import com.app.rest.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,6 +60,17 @@ public class UserServiceImpl implements UserService {
        if(user != null){
            return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
        }
-       return null;
+       throw new UsernameNotFoundException("user not found");
+    }
+
+
+    public UserDTO getUser(String s) throws UsernameNotFoundException {
+        User user = userRepository.findUserByEmail(s);
+        UserDTO userDTO = new UserDTO();
+        if(user != null){
+            BeanUtils.copyProperties(user, userDTO);
+            return userDTO;
+        }
+        throw new UsernameNotFoundException("user not found");
     }
 }

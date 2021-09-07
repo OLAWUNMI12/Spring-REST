@@ -13,5 +13,6 @@ public interface UserService extends UserDetailsService {
     List<UserDTO> getAllUsers();
     UserDTO updateUser(UserDTO userDTO);
     boolean deleteUser(Integer id);
+    UserDTO getUser(String email);
 
 }
