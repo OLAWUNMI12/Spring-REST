@@ -1,11 +1,13 @@
 package com.app.rest.controller;
 
+import antlr.StringUtils;
 import com.app.rest.dto.UserDTO;
 import com.app.rest.model.request.UserRequest;
 import com.app.rest.model.response.UserResponse;
 import com.app.rest.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +18,13 @@ public class BasicController {
     UserService userService;
 
     @GetMapping("/getUser")
-    public String fetchUser(){
-        return "Fetching user";
+    public UserResponse fetchUser(@Param(value =  "email") String  email){
+        UserResponse userResponse = new UserResponse();
+        if(email != null && !email.equals("")){
+            UserDTO userDTOResponse = userService.getUser(email);
+            BeanUtils.copyProperties(userDTOResponse, userResponse);
+        }
+        return userResponse;
     }
 
     @PutMapping("/update")
